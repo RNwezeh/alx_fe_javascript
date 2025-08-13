@@ -10,10 +10,10 @@ function showRandomQuote() {
     const randomIndex = Math.floor(Math.random() * quotes.length);
     const quote = quotes[randomIndex];
 
-    let quoteContainer = document.getElementById("quote-container");
+    let quoteContainer = document.getElementById("quoteDisplay");
     if (!quoteContainer) {
         quoteContainer = document.createElement("div");
-        quoteContainer.id = "quote-container";
+        quoteContainer.id = "quoteDisplay";
         document.body.appendChild(quoteContainer);
     }
 
