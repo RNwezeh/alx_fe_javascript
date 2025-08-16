@@ -196,3 +196,25 @@ document.addEventListener("DOMContentLoaded", function () {
     populateCategories();
     filterQuotes();
 });
+
+function exportQuotes() {
+    // Convert quotes array into JSON string
+    const jsonData = JSON.stringify(quotes, null, 2);
+
+    // Create a Blob with application/json type
+    const blob = new Blob([jsonData], { type: "application/json" });
+
+    // Create a temporary download link
+    const url = URL.createObjectURL(blob);
+    const downloadLink = document.createElement("a");
+    downloadLink.href = url;
+    downloadLink.download = "quotes.json";
+
+    // Trigger download
+    document.body.appendChild(downloadLink);
+    downloadLink.click();
+
+    // Cleanup
+    document.body.removeChild(downloadLink);
+    URL.revokeObjectURL(url);
+}
