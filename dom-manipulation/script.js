@@ -370,3 +370,72 @@ document.addEventListener("DOMContentLoaded", () => {
   renderQuoteCount();    // Show counts and list
   renderLastViewed();    // Show last viewed quote from Session Storage
 });
+
+// ===== Category Filter =====
+function populateCategories() {
+    const filterSelect = document.getElementById("categoryFilter");
+    if (!filterSelect) return;
+
+    const uniqueCategories = [...new Set(quotes.map(q => q.category))].sort();
+    filterSelect.innerHTML = `<option value="all">All Categories</option>`;
+
+    uniqueCategories.forEach(cat => {
+        const option = document.createElement("option");
+        option.value = cat;
+        option.textContent = cat;
+        filterSelect.appendChild(option);
+    });
+
+    // Restore last selected category
+    const lastCategory = getLastCategoryFilter();
+    filterSelect.value = lastCategory;
+}
+
+function filterQuotes() {
+    const selectedCategory = document.getElementById("categoryFilter").value;
+    saveLastCategoryFilter(selectedCategory);
+
+    const filtered = selectedCategory === "all"
+        ? quotes
+        : quotes.filter(q => q.category === selectedCategory);
+
+    const list = document.getElementById("quote-list");
+    list.innerHTML = "";
+    filtered.forEach(q => {
+        const li = document.createElement("li");
+        li.textContent = `"${q.text}" — ${q.category}`;
+        list.appendChild(li);
+    });
+}
+
+// ===== Initialization =====
+document.addEventListener("DOMContentLoaded", function () {
+    loadQuotes();
+
+    // Create UI
+    const app = document.createElement("div");
+
+    // Filter dropdown
+    const filterSelect = document.createElement("select");
+    filterSelect.id = "categoryFilter";
+    filterSelect.addEventListener("change", () => {
+        filterQuotes();
+    });
+    app.appendChild(filterSelect);
+
+    // Show quote button
+    const showBtn = document.createElement("button");
+    showBtn.textContent = "Show Random Quote";
+    showBtn.addEventListener("click", showRandomQuote);
+    app.appendChild(showBtn);
+
+    // Quote display
+    const quoteContainer = document.createElement("div");
+    quoteContainer.id = "quote-container";
+    app.appendChild(quoteContainer);
+
+    // List display
+    const list = document.createElement("ul");
+    list.id = "quote-list";
+    app.appendChild(list);
+});
