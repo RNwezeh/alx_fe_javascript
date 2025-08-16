@@ -438,4 +438,13 @@ document.addEventListener("DOMContentLoaded", function () {
     const list = document.createElement("ul");
     list.id = "quote-list";
     app.appendChild(list);
+
+    // Add quote form
+    app.appendChild(createAddQuoteForm());
+
+    document.body.appendChild(app);
+
+    // Populate categories and filter list
+    populateCategories();
+    filterQuotes();
 });
